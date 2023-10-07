@@ -14,25 +14,16 @@ const Statistics = ({good, neutral, bad}) => {
   if (all > 0) {
     return (
       <div>
-      {/* <p>
-        good {good}
-        <br/>
-        neutral {neutral}
-        <br/>
-        bad {bad}
-        <br/>
-        all {all}
-        <br/>
-        average {average}
-        <br/>
-        positive {positive * 100}%
-      </p> */}
-      <StatisticsLine text="good" value={good} />
-      <StatisticsLine text="neutral" value={neutral} />
-      <StatisticsLine text="bad" value={bad} />
-      <StatisticsLine text="all" value={all} />
-      <StatisticsLine text="average" value={average} />
-      <StatisticsLine text="positive" value={positive * 100+"%"} />
+        <table>
+          <tbody>
+          <StatisticsLine text="good" value={good} />
+          <StatisticsLine text="neutral" value={neutral} />
+          <StatisticsLine text="bad" value={bad} />
+          <StatisticsLine text="all" value={all} />
+          <StatisticsLine text="average" value={average} />
+          <StatisticsLine text="positive" value={positive * 100+"%"} />
+          </tbody>
+        </table>
     </div>
     )
   } else {
@@ -45,10 +36,10 @@ const Statistics = ({good, neutral, bad}) => {
 }
 
 const StatisticsLine = (props) => (
-  <>
-    {props.text} {props.value}
-    <br />
-  </>
+  <tr>
+    <td>{props.text}</td> 
+    <td>{props.value}</td>
+  </tr>
 )
 
 const Button = ({handleClick, text}) => (
