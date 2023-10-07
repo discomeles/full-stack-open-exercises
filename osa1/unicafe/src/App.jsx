@@ -4,16 +4,30 @@ const Header = ({headerTxt}) => (
   <h2>{headerTxt}</h2>
 )
 
-const DisplayStats = ({good, neutral, bad}) => (
-  <div>
-    <p>
-      good {good}
-      <br/>
-      neutral {neutral}
-      <br/>
-      bad {bad}
-    </p>
-  </div>)
+const Statistics = ({good, neutral, bad}) => {
+  const all = good + neutral + bad
+  const average = all > 0 ? (good - bad)/ all : 0
+  const positive = neutral + bad > 0 && all > 0 ? good / all : 
+                  neutral + bad === 0 && all > 0 ? 1 :
+                  0
+    return (
+      <div>
+      <p>
+        good {good}
+        <br/>
+        neutral {neutral}
+        <br/>
+        bad {bad}
+        <br/>
+        all {all}
+        <br/>
+        average {average}
+        <br/>
+        positive {positive * 100}%
+      </p>
+    </div>
+    )
+}
 
 const Button = ({handleClick, text}) => (
   <button onClick={handleClick}>
@@ -44,7 +58,7 @@ const App = () => {
         handleClick={countBad}
         text="bad" />
       <Header headerTxt="statistics" />
-      <DisplayStats good={good} neutral={neutral} bad={bad} />
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }
