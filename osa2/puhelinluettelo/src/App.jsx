@@ -4,18 +4,20 @@ const App = () => {
   // App-komponentille määritellään tila, joka saa alkuarvoksi
   // luettelon alustavan taulukon
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas', number: '040-1231234' }
   ])
   
   // Tila newName kontrolloi lomaketta 
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   // Lomakkeen tapahtumankäsittelijä
   // event.preventDefault() estää oletusarvoisen toiminnan
   const addName = (event) => {
     event.preventDefault()
     const nameObject = {
-      name: newName
+      name: newName,
+      number: newNumber
     }
     // Jos lisättävä nimi on olemassa, estetään lisäys
     // Test on testifunktio
@@ -33,12 +35,17 @@ const App = () => {
 
     // Nimisyöte tyhjennetään joka tapauksessa
     setNewName('')
+    setNewNumber('')
   }
 
   // Syötekomponentin tapahtumankäsittelijä synkronoi
   // nimikenttään tehdyt muutokset App-komponentin tilaan
   const handleNameChange = (event) => {
     setNewName(event.target.value)
+  }
+
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value)
   }
 
   return (
@@ -60,12 +67,22 @@ const App = () => {
                 />
         </div>
         <div>
+        number: <input
+                  type="text"
+                  name="number"
+                  id="number"
+                  autoComplete='off' 
+                  value={newNumber}
+                  onChange={handleNumberChange}
+                />
+        </div>
+        <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
       {persons.map(person =>
-        <p key={person.name}>{person.name}</p>
+        <p key={person.name}>{person.name} {person.number}</p>
         )}
     </div>
   )
