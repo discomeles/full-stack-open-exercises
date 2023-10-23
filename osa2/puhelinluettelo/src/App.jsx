@@ -1,5 +1,68 @@
 import { useState } from 'react'
 
+const Filter = (props) => {
+  return (
+    <>
+    filter shown with <input 
+                          type="text"
+                          name="filter"
+                          id="filter"
+                          autoComplete='off'
+                          value={props.filterValue}
+                          onChange={props.handleFilter}
+                          />
+    </>
+  )
+}
+
+const PersonForm = (props) => {
+  return (
+    <form onSubmit={props.onSubmit}>
+        <div>
+          {/* Nimisyötekomponentin value-attribuutiksi annetaan muuttuja */}
+          {/* joka on komponentin App-tilassa, jolloin App kontrolloi */}
+          {/* syötekomponentin toimintaa */}
+          name: <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  autoComplete='off' 
+                  value={props.newName}
+                  onChange={props.handleNameChange}
+                />
+        </div>
+        <div>
+        number: <input
+                  type="text"
+                  name="number"
+                  id="number"
+                  autoComplete='off' 
+                  value={props.newNumber}
+                  onChange={props.handleNumberChange}
+                />
+        </div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+  )
+}
+
+const Persons = (props) => {
+  return (
+    <>
+    {props.filteredPersons.map(person => 
+    <Person key={person.name} person={person}/>)}
+    </>
+  )
+}
+
+const Person = (props) => (
+  <p>
+  {props.person.name} {props.person.number}
+  </p>
+)
+
 const App = () => {
   // App-komponentille määritellään tila, joka saa alkuarvoksi
   // luettelon alustavan taulukon
@@ -67,49 +130,16 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       {/* Hakukenttä */}
-      filter shown with <input 
-                          type="text"
-                          name="filter"
-                          id="filter"
-                          autoComplete='off'
-                          value={filterValue}
-                          onChange={handleFilter}
-                          />
+      <Filter filterValue={filterValue} handleFilter={handleFilter}/>
       <h2>add a new</h2>
-      {/* Nimilomakkeen tapahtumankäsittelijä on addName */}
-      <form onSubmit={addName}>
-        <div>
-          {/* Nimisyötekomponentin value-attribuutiksi annetaan muuttuja */}
-          {/* joka on komponentin App-tilassa, jolloin App kontrolloi */}
-          {/* syötekomponentin toimintaa */}
-          name: <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  autoComplete='off' 
-                  value={newName}
-                  onChange={handleNameChange}
-                />
-        </div>
-        <div>
-        number: <input
-                  type="text"
-                  name="number"
-                  id="number"
-                  autoComplete='off' 
-                  value={newNumber}
-                  onChange={handleNumberChange}
-                />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      < PersonForm onSubmit={addName}
+                    newName={newName}
+                    handleNameChange={handleNameChange}
+                    newNumber={newNumber}
+                    handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
       {/* Näytetään suodatetut tiedot*/}
-      {filteredPersons.map(person =>
-        <p key={person.name}>{person.name} {person.number}</p>
-        )}
+      <Persons filteredPersons={filteredPersons} />
     </div>
   )
 
