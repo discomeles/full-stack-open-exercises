@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const Filter = (props) => {
   return (
@@ -66,18 +67,23 @@ const Person = (props) => (
 const App = () => {
   // App-komponentille määritellään tila, joka saa alkuarvoksi
   // luettelon alustavan taulukon
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-1231234' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
+  const [persons, setPersons] = useState([])
   
   // Tila newName kontrolloi lomaketta 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   // filterValue kontrolloi filter kenttää
   const [filterValue, setFilterValue] = useState('')
+
+  // haetaan alustavan taulukon data palvelimelta
+  // Axios-kirjaston avulla. Effect hook suoritetaan kerran.
+  useEffect(() => {
+    axios.get('http://localhost:3001/persons')
+    .then(response => {
+      setPersons(response.data)
+    })
+  },[])
+
 
   // Lomakkeen tapahtumankäsittelijä
   // event.preventDefault() estää oletusarvoisen toiminnan
