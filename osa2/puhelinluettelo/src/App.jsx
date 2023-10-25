@@ -49,16 +49,16 @@ const PersonForm = (props) => {
   )
 }
 
-const Persons = (props) => {
+const ShowPersons = (props) => {
   return (
     <>
     {props.filteredPersons.map(person => 
-    <Person key={person.name} person={person}/>)}
+    <ShowPerson key={person.name} person={person}/>)}
     </>
   )
 }
 
-const Person = (props) => (
+const ShowPerson = (props) => (
   <p>
   {props.person.name} {props.person.number}
   </p>
@@ -84,17 +84,24 @@ const App = () => {
     })
   },[])
 
+  const addPersonToServer = (nameObject) => {
+    axios
+      .post('http://localhost:3001/persons', nameObject)
+      .then(response => {
+        setPersons(persons.concat(nameObject))
+      })
+  }
 
   // Lomakkeen tapahtumankäsittelijä
   // event.preventDefault() estää oletusarvoisen toiminnan
-  const addName = (event) => {
+  const addPerson = (event) => {
     event.preventDefault()
     const nameObject = {
       name: newName,
       number: newNumber
     }
     // Jos lisättävä nimi on olemassa, estetään lisäys
-    // Test on testifunktio
+    // test on testifunktio nimen matchaamiseen
     const test = (element) => element.name === newName
 
     // Logitusta voi käyttää varmistamaan, että tulos on haluttu:
@@ -105,7 +112,9 @@ const App = () => {
     
     persons.some(test) 
       ? alert(`${newName} is already added to phonebook`) 
-      : setPersons(persons.concat(nameObject))
+//      : setPersons(persons.concat(nameObject))
+      : addPersonToServer(nameObject)
+
 
     // Nimisyöte tyhjennetään joka tapauksessa
     setNewName('')
@@ -138,14 +147,14 @@ const App = () => {
       {/* Hakukenttä */}
       <Filter filterValue={filterValue} handleFilter={handleFilter}/>
       <h2>add a new</h2>
-      < PersonForm onSubmit={addName}
+      < PersonForm onSubmit={addPerson}
                     newName={newName}
                     handleNameChange={handleNameChange}
                     newNumber={newNumber}
                     handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
       {/* Näytetään suodatetut tiedot*/}
-      <Persons filteredPersons={filteredPersons} />
+      <ShowPersons filteredPersons={filteredPersons} />
     </div>
   )
 
