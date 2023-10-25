@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+// Nyt axios toiminnallisuus on moduulissa persons
+import personService from './services/persons'
 
 const Filter = (props) => {
   return (
@@ -78,16 +79,16 @@ const App = () => {
   // haetaan alustavan taulukon data palvelimelta
   // Axios-kirjaston avulla. Effect hook suoritetaan kerran.
   useEffect(() => {
-    axios.get('http://localhost:3001/persons')
-    .then(response => {
-      setPersons(response.data)
+    personService.getAll()
+      .then(intialPersons => {
+        setPersons(intialPersons)
     })
   },[])
 
+  // Funktio lisää uuden henkilön tiedot palvelimelle
   const addPersonToServer = (nameObject) => {
-    axios
-      .post('http://localhost:3001/persons', nameObject)
-      .then(response => {
+    personService.create(nameObject)
+      .then(returnedPerson => {
         setPersons(persons.concat(nameObject))
       })
   }
@@ -111,8 +112,7 @@ const App = () => {
     // nimi ei ole listassa ja se lisätään.
     
     persons.some(test) 
-      ? alert(`${newName} is already added to phonebook`) 
-//      : setPersons(persons.concat(nameObject))
+      ? alert(`${newName} is already added to phonebook`)
       : addPersonToServer(nameObject)
 
 
