@@ -50,19 +50,28 @@ const PersonForm = (props) => {
   )
 }
 
-const ShowPersons = (props) => {
+const ShowPersons = ({filteredPersons, removePerson}) => {
   return (
     <>
-    {props.filteredPersons.map(person => 
-    <ShowPerson key={person.name} person={person}/>)}
+    {filteredPersons.map(person => 
+    <ShowPerson key={person.name} person={person} removePerson={removePerson}/>)}
     </>
   )
 }
 
-const ShowPerson = (props) => (
-  <p>
-  {props.person.name} {props.person.number}
-  </p>
+const ShowPerson = ({person, removePerson}) => {
+  return (
+    <p>
+    {person.name} {person.number} 
+    <Button id={person.id} name={person.name} removePerson={removePerson}/>
+    </p>
+  )
+}
+
+const Button = ({id, name, removePerson}) => (
+  <button type="button"
+          onClick={() => {if(window.confirm(`Delete ${name}?`)) {removePerson(id)}}}
+          text="delete">delete</button>
 )
 
 const App = () => {
@@ -89,7 +98,8 @@ const App = () => {
   const addPersonToServer = (nameObject) => {
     personService.create(nameObject)
       .then(returnedPerson => {
-        setPersons(persons.concat(nameObject))
+        console.log(returnedPerson)
+        setPersons(persons.concat(returnedPerson))
       })
   }
 
@@ -119,6 +129,14 @@ const App = () => {
     // Nimisyöte tyhjennetään joka tapauksessa
     setNewName('')
     setNewNumber('')
+  }
+
+  const removePerson = (id) => {
+    console.log(`remove person ${id}`)
+    personService.remove(id)
+      .then(returnedPerson => {
+        setPersons(persons.filter(person => person.id !== id))
+      })
   }
 
   // Nimisyötekomponentin tapahtumankäsittelijä synkronoi
@@ -154,7 +172,7 @@ const App = () => {
                     handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
       {/* Näytetään suodatetut tiedot*/}
-      <ShowPersons filteredPersons={filteredPersons} />
+      <ShowPersons filteredPersons={filteredPersons} removePerson={removePerson}/>
     </div>
   )
 
