@@ -74,13 +74,25 @@ const Button = ({id, name, removePerson}) => (
           text="delete">delete</button>
 )
 
-const Notification =({message}) => {
+const Notification = ({message}) => {
   if (message === null) {
     return null
   }
 
   return (
     <div className="success">
+      {message}
+    </div>
+  )  
+}
+
+const Error = ({message}) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className="error">
       {message}
     </div>
   )  
@@ -97,6 +109,7 @@ const App = () => {
   // filterValue kontrolloi filter kenttää
   const [filterValue, setFilterValue] = useState('')
   const [notifMessage, setNotifMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   // haetaan alustavan taulukon data palvelimelta
   // Axios-kirjaston avulla. Effect hook suoritetaan kerran.
@@ -173,6 +186,14 @@ const App = () => {
           setNotifMessage(null)
         }, 5000)
       })
+      .catch(error => {
+        setErrorMessage(
+          `Information of ${nameObject.name} has already been removed from server`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      })
   }
 
   // Nimisyötekomponentin tapahtumankäsittelijä synkronoi
@@ -199,6 +220,7 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={notifMessage} />
+      <Error message={errorMessage} />
       {/* Hakukenttä */}
       <Filter filterValue={filterValue} handleFilter={handleFilter}/>
       <h2>add a new</h2>
