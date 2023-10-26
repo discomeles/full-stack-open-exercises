@@ -74,6 +74,18 @@ const Button = ({id, name, removePerson}) => (
           text="delete">delete</button>
 )
 
+const Notification =({message}) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className="success">
+      {message}
+    </div>
+  )  
+}
+
 const App = () => {
   // App-komponentille määritellään tila, joka saa alkuarvoksi
   // luettelon alustavan taulukon
@@ -84,6 +96,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   // filterValue kontrolloi filter kenttää
   const [filterValue, setFilterValue] = useState('')
+  const [notifMessage, setNotifMessage] = useState(null)
 
   // haetaan alustavan taulukon data palvelimelta
   // Axios-kirjaston avulla. Effect hook suoritetaan kerran.
@@ -125,6 +138,12 @@ const App = () => {
     personService.create(nameObject)
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
+        setNotifMessage(
+          `Added ${returnedPerson.name}`
+        )
+        setTimeout(() => {
+          setNotifMessage(null)
+        }, 5000)
       })
   }
 
@@ -132,6 +151,12 @@ const App = () => {
     personService.remove(id)
       .then(returnedPerson => {
         setPersons(persons.filter(person => person.id !== id))
+        setNotifMessage(
+          `Delete successful`
+        )
+        setTimeout(() => {
+          setNotifMessage(null)
+        }, 5000)
       })
   }
 
@@ -141,6 +166,12 @@ const App = () => {
       .then(returnedPerson => {
         setPersons(persons.map(person => person.id !== id ? person :
           returnedPerson))
+        setNotifMessage(
+          `Changed number for ${returnedPerson.name}`
+        )
+        setTimeout(() => {
+          setNotifMessage(null)
+        }, 5000)
       })
   }
 
@@ -167,6 +198,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notifMessage} />
       {/* Hakukenttä */}
       <Filter filterValue={filterValue} handleFilter={handleFilter}/>
       <h2>add a new</h2>
