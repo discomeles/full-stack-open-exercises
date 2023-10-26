@@ -94,15 +94,6 @@ const App = () => {
     })
   },[])
 
-  // Funktio lisää uuden henkilön tiedot palvelimelle
-  const addPersonToServer = (nameObject) => {
-    personService.create(nameObject)
-      .then(returnedPerson => {
-        console.log(returnedPerson)
-        setPersons(persons.concat(returnedPerson))
-      })
-  }
-
   // Lomakkeen tapahtumankäsittelijä
   // event.preventDefault() estää oletusarvoisen toiminnan
   const addPerson = (event) => {
@@ -111,31 +102,45 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    // Jos lisättävä nimi on olemassa, estetään lisäys
-    // test on testifunktio nimen matchaamiseen
-    const test = (element) => element.name === newName
+    // Jos lisättävä nimi on olemassa, kutsutaan funktiota
+    // joka muuttaa nimeen liitetyn numeron
+    const personIndex = persons.findIndex((element) => element.name === newName)
 
-    // Logitusta voi käyttää varmistamaan, että tulos on haluttu:
-    // console.log(persons.some(test)) antaa true, jos nimi on jo listassa.
-    // Sitten voi tehdä if-lauseen tai ternaryn.
-    // Jos arrayn mikään elementti ei palauta testifunktiolla true
-    // nimi ei ole listassa ja se lisätään.
-    
-    persons.some(test) 
-      ? alert(`${newName} is already added to phonebook`)
-      : addPersonToServer(nameObject)
-
+    if (personIndex === -1) {
+      addPersonToServer(nameObject)
+    } else {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        let id = persons[personIndex].id
+        modifyPerson({id, nameObject})
+      }            
+    }
 
     // Nimisyöte tyhjennetään joka tapauksessa
     setNewName('')
     setNewNumber('')
   }
 
+  // Funktio lisää uuden henkilön tiedot palvelimelle
+  const addPersonToServer = (nameObject) => {
+    personService.create(nameObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+      })
+  }
+
   const removePerson = (id) => {
-    console.log(`remove person ${id}`)
     personService.remove(id)
       .then(returnedPerson => {
         setPersons(persons.filter(person => person.id !== id))
+      })
+  }
+
+  // muutetaan objektin sisältö palvelimella
+  const modifyPerson = ({id, nameObject}) => {
+    personService.modify(id, nameObject)
+      .then(returnedPerson => {
+        setPersons(persons.map(person => person.id !== id ? person :
+          returnedPerson))
       })
   }
 
