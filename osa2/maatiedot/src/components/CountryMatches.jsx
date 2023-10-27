@@ -42,9 +42,7 @@ const CountryMatches = ({searchValue, allCountries}) => {
       <>
       </>
     )
-  }
-
-  
+  }  
 }
 
 export default CountryMatches

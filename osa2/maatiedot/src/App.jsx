@@ -22,24 +22,9 @@ const App = () => {
 
   // Toisella efektillä haetaan maakohtainen data
 
-
-  // useEffect(() => {
-  //   console.log('country is now', country)
-
-  //   if (country) {
-  //     console.log('getting data')
-  //     // axios
-  //     //   .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${foo}`)
-  //   }
-  // })
-
   // Maahaun tapahtumankäsittelijä
   const handleSearch = (event) => {
     setSearchValue(event.target.value)
-  }
-
-  const handleCountry = () => {
-
   }
 
   // Näytettävien maannimien rajaaja
