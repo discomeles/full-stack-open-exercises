@@ -12,10 +12,7 @@ const ListCountries = ({countries}) => {
   )
 }
 
-const CountryMatches = ({searchValue, allCountries}) => {
-  const foundCountries = allCountries.filter((element) => (
-  element.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())))
-  // console.log(allCountries)
+const CountryMatches = ({foundCountries}) => {
   // console.log(foundCountries)
 
   if (foundCountries.length > 10) {
@@ -34,7 +31,7 @@ const CountryMatches = ({searchValue, allCountries}) => {
   } else if (foundCountries.length === 1) {
     return (
       <p>
-      <CountryInfo country={foundCountries[0]}/>
+      foo
       </p>
     )
   } else {

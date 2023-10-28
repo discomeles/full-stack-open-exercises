@@ -1,7 +1,9 @@
-const CountryInfo = (props) => {
+const CountryInfo = ({country, getCountryData}) => {
+    getCountryData(country)
+    
     return (
         <>
-        {props.country}
+        {country}
         </>
     )
 }
