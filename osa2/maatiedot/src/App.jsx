@@ -10,6 +10,8 @@ const App = () => {
   const [selected, setSelected] = useState('')
   const [countryData, setCountryData] = useState(null)
 
+  //console.log(allCountries)
+
   // Haetaan ensin kaikkien maiden lista, ja tallennetaan
   // nimet tilaan
   useEffect(() => {
@@ -21,30 +23,23 @@ const App = () => {
         })
   },[])
 
-  // Haetaan maakohtainen data
-  const getCountryData = (country) => {
-    console.log(`get data of ${country}`)
-    axios
-      .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${country.toLocaleLowerCase()}`)
-        .then(response => {
-          console.log(response.data)
-        })
-  }
-
   // Maahaun tapahtumankäsittelijä
   const handleSearch = (event) => {
     setSearchValue(event.target.value)
-  }
-
-  const setCountry = (value) => {
-    setSelected(value)
+    console.log(event.target.value)
+    const found = allCountries.filter((element) => (
+      element.toLocaleLowerCase().includes(event.target.value.toLocaleLowerCase())))
+    console.log(found)
+    if (found.length === 1) {
+      setSelected(foundCountries[0])
+    } else {
+      setSelected('')
+    }
   }
 
   // Näytettävien maannimien rajaaja
   const foundCountries = allCountries.filter((element) => (
     element.toLocaleLowerCase().includes(searchValue.toLocaleLowerCase())))
-
-
 
   return (
      <div>
@@ -52,8 +47,9 @@ const App = () => {
       {/* hakukenttä */}
       <SearchField searchValue={searchValue} handleSearch={handleSearch}/>
       <CountryMatches foundCountries={foundCountries}/>
+
       {foundCountries.length === 1 ?
-         <CountryInfo country={foundCountries[0]} getCountryData={getCountryData}/> : <></>}
+         <CountryInfo country={selected}/> : <></>}
      </div>
   )
 }

@@ -28,12 +28,12 @@ const CountryMatches = ({foundCountries}) => {
         <ListCountries countries={foundCountries}/>
       </>
     )
-  } else if (foundCountries.length === 1) {
-    return (
-      <p>
-      foo
-      </p>
-    )
+  // } else if (foundCountries.length === 1) {
+  //   return (
+  //     <p>
+  //     foo
+  //     </p>
+  //   )
   } else {
     return (
       <>

@@ -7,7 +7,7 @@ const SearchField = (props) => {
                       id="search"
                       autoComplete='off'
                       value={props.searchValue}
-                      onChange={props.handleSearch}
+                      onInput={props.handleSearch}
                       />
     </>
   )
