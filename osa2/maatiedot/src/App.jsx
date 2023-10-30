@@ -8,9 +8,6 @@ const App = () => {
   const [allCountries, setAllCountries] = useState([])
   const [searchValue, setSearchValue] = useState('')
   const [selected, setSelected] = useState('')
-  const [countryData, setCountryData] = useState(null)
-
-  //console.log(allCountries)
 
   // Haetaan ensin kaikkien maiden lista, ja tallennetaan
   // nimet tilaan
@@ -26,12 +23,12 @@ const App = () => {
   // Maahaun tapahtumankäsittelijä
   const handleSearch = (event) => {
     setSearchValue(event.target.value)
-    console.log(event.target.value)
+    //console.log(event.target.value)
     const found = allCountries.filter((element) => (
       element.toLocaleLowerCase().includes(event.target.value.toLocaleLowerCase())))
-    console.log(found)
+    //console.log(found)
     if (found.length === 1) {
-      setSelected(foundCountries[0])
+      setSelected(found[0])
     } else {
       setSelected('')
     }
@@ -43,7 +40,6 @@ const App = () => {
 
   return (
      <div>
-      {/* {console.log(allCountries)} */}
       {/* hakukenttä */}
       <SearchField searchValue={searchValue} handleSearch={handleSearch}/>
       <CountryMatches foundCountries={foundCountries}/>

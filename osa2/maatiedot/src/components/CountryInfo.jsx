@@ -4,8 +4,7 @@ import { useState, useEffect } from 'react'
 const CountryInfo = ({country}) => {
   const [countryData, setCountryData] = useState(null)
 
-
-  console.log(`get data of ${country}`)
+  // Haetaan maakohtainen data
   useEffect(() => {
     axios
       .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${country.toLocaleLowerCase()}`)
@@ -14,16 +13,24 @@ const CountryInfo = ({country}) => {
         })
     },[])  
 
-  console.log(countryData)
-
   if (countryData) {
     return (
+      <>
+      <h1>{countryData.name.common}</h1>
       <p>
-      {countryData.name.common}
-      {countryData.capital[0]}
-      {countryData.area}
-      
+      capital {countryData.capital[0]}
+      <br/>
+      area {countryData.area}
       </p>
+      <h2>languages:</h2>
+      {Object.values(countryData.languages).map(lang => 
+        <li key={lang}>
+          {lang}
+        </li>
+        )}
+        <br/>
+      <img src={countryData.flags.png} alt={countryData.flags.alt} height="150"/>
+      </>
   )
   } else {
     return (

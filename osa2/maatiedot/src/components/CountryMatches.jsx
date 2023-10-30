@@ -1,5 +1,3 @@
-import CountryInfo from "./CountryInfo"
-
 const ListCountries = ({countries}) => {
   return (
     <>
@@ -28,12 +26,6 @@ const CountryMatches = ({foundCountries}) => {
         <ListCountries countries={foundCountries}/>
       </>
     )
-  // } else if (foundCountries.length === 1) {
-  //   return (
-  //     <p>
-  //     foo
-  //     </p>
-  //   )
   } else {
     return (
       <>
