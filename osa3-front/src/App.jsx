@@ -54,7 +54,7 @@ const ShowPersons = ({filteredPersons, removePerson}) => {
   return (
     <>
     {filteredPersons.map(person => 
-    <ShowPerson key={person.name} person={person} removePerson={removePerson}/>)}
+    <ShowPerson key={person.id} person={person} removePerson={removePerson}/>)}
     </>
   )
 }
