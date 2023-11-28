@@ -1,17 +1,18 @@
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
-const CountryInfo = ({country}) => {
+const CountryInfo = ({selected}) => {
   const [countryData, setCountryData] = useState(null)
 
   // Haetaan maakohtainen data
   useEffect(() => {
+    if (selected) {
     axios
-      .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${country.toLocaleLowerCase()}`)
+      .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${selected.toLocaleLowerCase()}`)
         .then(response => {
           setCountryData(response.data)
-        })
-    },[])  
+        })}
+    },[selected])  
 
   if (countryData) {
     return (

@@ -7,7 +7,7 @@ import CountryInfo from './components/CountryInfo'
 const App = () => {
   const [allCountries, setAllCountries] = useState([])
   const [searchValue, setSearchValue] = useState('')
-  const [selected, setSelected] = useState('')
+  const [selected, setSelected] = useState(null)
 
   // Haetaan ensin kaikkien maiden lista, ja tallennetaan
   // nimet tilaan
@@ -23,15 +23,17 @@ const App = () => {
   // Maahaun tapahtumankäsittelijä
   const handleSearch = (event) => {
     setSearchValue(event.target.value)
-    //console.log(event.target.value)
     const found = allCountries.filter((element) => (
       element.toLocaleLowerCase().includes(event.target.value.toLocaleLowerCase())))
-    //console.log(found)
     if (found.length === 1) {
       setSelected(found[0])
     } else {
       setSelected('')
     }
+  }
+
+  const handleSelection = (country) => {
+    setSelected(country)
   }
 
   // Näytettävien maannimien rajaaja
@@ -42,10 +44,8 @@ const App = () => {
      <div>
       {/* hakukenttä */}
       <SearchField searchValue={searchValue} handleSearch={handleSearch}/>
-      <CountryMatches foundCountries={foundCountries}/>
-
-      {foundCountries.length === 1 ?
-         <CountryInfo country={selected}/> : <></>}
+      <CountryMatches foundCountries={foundCountries} handleSelection={handleSelection}/>
+      <CountryInfo selected={selected}/>
      </div>
   )
 }
