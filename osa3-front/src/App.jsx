@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 // Nyt axios toiminnallisuus on moduulissa persons
 import personService from './services/persons'
 
+/* eslint-disable react/prop-types */
+
 const Filter = (props) => {
   return (
     <>
@@ -71,7 +73,7 @@ const ShowPerson = ({person, removePerson}) => {
 const Button = ({id, name, removePerson}) => (
   <button type="button"
           onClick={() => {if(window.confirm(`Delete ${name}?`)) {removePerson(id)}}}
-          text="delete">delete</button>
+          >delete</button>
 )
 
 const Notification = ({message}) => {
