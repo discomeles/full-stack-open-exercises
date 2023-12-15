@@ -10,19 +10,19 @@ blogRouter.get('/', async (request, response) => {
 })
 
 // --- Lisää blogi ---
-blogRouter.post('/', (request, response) => {
+blogRouter.post('/', async (request, response, next) => {
   const blog = new Blog({
     title: request.body.title,
     author: request.body.author,
     url: request.body.url,
     likes: 0
   })
-
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
+  try {
+    const savedBlog = await blog.save()
+    response.status(201).json(savedBlog)
+  } catch(exception) {
+    next(exception)
+  }
 })
 
 module.exports = blogRouter
