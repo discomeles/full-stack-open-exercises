@@ -11,6 +11,11 @@ blogRouter.get('/', async (request, response) => {
 
 // --- Lisää blogi ---
 blogRouter.post('/', async (request, response, next) => {
+  if (!request.body.title) {
+    return response.status(400).end()
+  } else if (!request.body.url) {
+    return response.status(400).end()
+  } else {
   const blog = new Blog({
     title: request.body.title,
     author: request.body.author,
@@ -22,7 +27,7 @@ blogRouter.post('/', async (request, response, next) => {
     response.status(201).json(savedBlog)
   } catch(exception) {
     next(exception)
-  }
+  }}
 })
 
 module.exports = blogRouter

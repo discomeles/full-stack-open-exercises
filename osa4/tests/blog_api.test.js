@@ -87,6 +87,34 @@ test('if likes is not given, set the value to 0', async () => {
     expect(likes[likes.length - 1]).toBe(0)
 })
 
+test('new blog without title gets a bad request statuscode', async () => {
+  const newBlog = {
+    author: "Robert C. Martin",
+    url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+    likes: 2
+  }
+
+  await api
+  .post('/api/blogs')
+  .send(newBlog)
+  .expect(400)
+
+})
+
+test('new blog without url gets a bad request statuscode', async () => {
+  const newBlog = {
+    title: "Type wars",
+    author: "Robert C. Martin",
+    likes: 2
+  }
+
+  await api
+  .post('/api/blogs')
+  .send(newBlog)
+  .expect(400)
+
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
