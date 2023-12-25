@@ -21,10 +21,7 @@ const initialBlogs = [
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let blogObject = new Blog(initialBlogs[0])
-  await blogObject.save()
-  blogObject = new Blog(initialBlogs[1])
-  await blogObject.save()
+  await Blog.insertMany(initialBlogs)
 })
 
 test('blogs are returned as json', async () => {
@@ -113,6 +110,13 @@ test('new blog without url gets a bad request statuscode', async () => {
   .send(newBlog)
   .expect(400)
 
+})
+
+test('remove blog by id', async () => {
+  const blogs = await Blog.find({})
+  const blogId = blogs[0]._id
+  await api.delete(`/api/blogs/${blogId}`)
+  .expect(204)
 })
 
 afterAll(async () => {

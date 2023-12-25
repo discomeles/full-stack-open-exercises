@@ -30,4 +30,11 @@ blogRouter.post('/', async (request, response, next) => {
   }}
 })
 
+// --- Poista blogi id:n perusteella ---
+blogRouter.delete('/:id', async(request, response, next) => {
+  console.log(request.params.id)
+  await Blog.findByIdAndRemove(request.params.id)
+  response.status(204).end()
+})
+
 module.exports = blogRouter
