@@ -119,6 +119,27 @@ test('remove blog by id', async () => {
   .expect(204)
 })
 
+test('update likes', async () => {
+  const blogs = await Blog.find({})
+  console.log('found')
+  const blogId = blogs[0]._id
+  const dataToUpdate = {
+    title: 'React patterns',
+    author: 'Michael Chan',
+    url: 'https://reactpatterns.com/',
+    likes: 9
+  }
+  
+  await api
+    .put(`/api/blogs/${blogId}`)
+    .send(dataToUpdate)
+    .expect(200)
+
+  const response = await api.get('/api/blogs')
+  const likes = response.body.map(r => r.likes)
+  expect(likes[0]).toBe(9)
+})
+
 afterAll(async () => {
   await mongoose.connection.close()
 })
