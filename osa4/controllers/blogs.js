@@ -22,12 +22,9 @@ blogRouter.post('/', async (request, response, next) => {
     url: request.body.url,
     likes: request.body.likes ? request.body.likes : 0
   })
-  try {
     const savedBlog = await blog.save()
     response.status(201).json(savedBlog)
-  } catch(exception) {
-    next(exception)
-  }}
+  }
 })
 
 // --- Poista blogi id:n perusteella ---
@@ -44,15 +41,11 @@ blogRouter.put('/:id', async(request, response, next) => {
     url: request.body.url,
     likes: request.body.likes
   }
-  try {
     const updatedBlog = await Blog.findByIdAndUpdate(
         request.params.id, 
         blog, 
         { new: true })
     response.status(200).json(updatedBlog)
-  } catch(exception) {
-    next(exception)
-  }
 })
 
 module.exports = blogRouter
