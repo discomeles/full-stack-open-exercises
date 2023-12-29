@@ -5,13 +5,13 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 
-const getToken = request => {
-  const authorization = request.headers.authorization
-  if (authorization && authorization.startsWith('Bearer ')) {
-    return authorization.replace('Bearer ', '')
-  }
-  return null
-}
+// const getToken = request => {
+//   const authorization = request.headers.authorization
+//   if (authorization && authorization.startsWith('Bearer ')) {
+//     return authorization.replace('Bearer ', '')
+//   }
+//   return null
+// }
 
 // --- Blogi API ---
 // --- Hae kaikki ---
@@ -29,7 +29,8 @@ blogRouter.post('/', async (request, response, next) => {
   if (!request.body.url) {
     return response.status(400).end()
   }
-  const decodedToken = jwt.verify(getToken(request), config.jwtsecret)
+  console.log(request.token)
+  const decodedToken = jwt.verify(request.token, config.jwtsecret)
   console.log(decodedToken)
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })

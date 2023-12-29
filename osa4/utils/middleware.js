@@ -1,5 +1,16 @@
 const morgan = require('morgan')
 
+const tokenExtractor = (request, response, next) => {
+  const authorization = request.headers.authorization
+  if (authorization && authorization.startsWith('Bearer ')) {
+    request.token =  authorization.replace('Bearer ', '')
+  } else {
+    request.token = null
+  }
+
+  next()
+}
+
 // --- Virheenkäsittelijä ---
 const errorHandler = (error, request, response, next) => {
     console.error(error.message)
@@ -22,6 +33,7 @@ const unknownEndpoint = (request, response) => {
 const requestLogger = morgan(':method :url :status :res[content-length] - :response-time ms')
 
 module.exports = {
+  tokenExtractor,
   errorHandler,
   unknownEndpoint,
   requestLogger
