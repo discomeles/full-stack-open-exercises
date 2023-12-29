@@ -8,6 +8,7 @@ const usersRouter = require('./controllers/users')
 const { unknownEndpoint, errorHandler, requestLogger } = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
+const loginRouter = require('./controllers/login')
 
 // --- Yhdistetään Mongo Atlakseen ---
 logger.info('connecting to', config.mongo_base_url)
@@ -26,6 +27,7 @@ app.use(requestLogger)
 
 app.use('/api/blogs', blogRouter)
 app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)
 
 app.use(unknownEndpoint)
 app.use(errorHandler)

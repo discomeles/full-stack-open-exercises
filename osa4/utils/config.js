@@ -11,8 +11,12 @@ const mongo_url = process.env.NODE_ENV === 'test'
   ? `mongodb+srv://${mongo_user}:${mongo_password}@${mongo_base_url}/${mongo_test}?retryWrites=true&w=majority`
   : `mongodb+srv://${mongo_user}:${mongo_password}@${mongo_base_url}/${mongo_db}?retryWrites=true&w=majority`
 
+// --- json web token secret ---
+const jwtsecret = process.env.JWTSECRET
+
 module.exports = {
     port,
     mongo_base_url,
-    mongo_url
+    mongo_url,
+    jwtsecret
   }
