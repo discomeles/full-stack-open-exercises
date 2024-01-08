@@ -29,9 +29,9 @@ blogRouter.post('/', async (request, response, next) => {
   if (!request.body.url) {
     return response.status(400).end()
   }
-  console.log(request.token)
+  // console.log(request.token)
   const decodedToken = jwt.verify(request.token, config.jwtsecret)
-  console.log(decodedToken)
+  // console.log(decodedToken)
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
@@ -55,8 +55,20 @@ blogRouter.post('/', async (request, response, next) => {
 
 // --- Poista blogi id:n perusteella ---
 blogRouter.delete('/:id', async(request, response, next) => {
-  await Blog.findByIdAndRemove(request.params.id)
-  response.status(204).end()
+  const decodedToken = jwt.verify(request.token, config.jwtsecret)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+
+  const blog = await Blog.findById(request.params.id)
+  if (blog.user.toString() === decodedToken.id) {
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
+  } else {
+    return response.status(403).json({ error: 'wrong user' })
+  }
+
+
 })
 
 // --- Muokkaa blogia ---
