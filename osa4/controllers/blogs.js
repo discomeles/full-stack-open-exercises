@@ -22,8 +22,9 @@ blogRouter.post('/', userExtractor, async (request, response, next) => {
   if (!request.body.url) {
     return response.status(400).end()
   }
-
+  console.log(request.user)
   const user = await User.findById(request.user)
+  console.log(user)
 
   const blog = new Blog({
     title: request.body.title,
@@ -48,7 +49,13 @@ blogRouter.delete('/:id', userExtractor, async(request, response, next) => {
   const blog = await Blog.findById(request.params.id)
   
   if (blog.user.toString() === user._id.toString()) {
+    // poistetaan itse blogi
     await Blog.findByIdAndRemove(request.params.id)
+
+    // poistetaan blogi myös käyttäjän blogilistasta
+    user.blogs = user.blogs.filter(element => element.toString() !== blog._id.toString())
+    await user.save()
+
     response.status(204).end()
   } else {
     return response.status(403).json({ error: 'wrong user' })
