@@ -4,14 +4,7 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
-
-// const getToken = request => {
-//   const authorization = request.headers.authorization
-//   if (authorization && authorization.startsWith('Bearer ')) {
-//     return authorization.replace('Bearer ', '')
-//   }
-//   return null
-// }
+const { userExtractor } = require('../utils/middleware')
 
 // --- Blogi API ---
 // --- Hae kaikki ---
@@ -22,21 +15,15 @@ blogRouter.get('/', async (request, response) => {
 })
 
 // --- Lisää blogi ---
-blogRouter.post('/', async (request, response, next) => {
+blogRouter.post('/', userExtractor, async (request, response, next) => {
   if (!request.body.title) {
     return response.status(400).end()
   } 
   if (!request.body.url) {
     return response.status(400).end()
   }
-  // console.log(request.token)
-  const decodedToken = jwt.verify(request.token, config.jwtsecret)
-  // console.log(decodedToken)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
-  }
 
-  const user = await User.findById(decodedToken.id)
+  const user = await User.findById(request.user)
 
   const blog = new Blog({
     title: request.body.title,
@@ -54,14 +41,13 @@ blogRouter.post('/', async (request, response, next) => {
 })
 
 // --- Poista blogi id:n perusteella ---
-blogRouter.delete('/:id', async(request, response, next) => {
+blogRouter.delete('/:id', userExtractor, async(request, response, next) => {
   const decodedToken = jwt.verify(request.token, config.jwtsecret)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
-  }
 
+  const user = await User.findById(request.user)
   const blog = await Blog.findById(request.params.id)
-  if (blog.user.toString() === decodedToken.id) {
+  
+  if (blog.user.toString() === user._id.toString()) {
     await Blog.findByIdAndRemove(request.params.id)
     response.status(204).end()
   } else {

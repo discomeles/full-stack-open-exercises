@@ -6,7 +6,7 @@ const cors = require('cors')
 const blogRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
 const { 
-  tokenExtractor, 
+  tokenExtractor,
   unknownEndpoint, 
   errorHandler, 
   requestLogger 
