@@ -19,6 +19,17 @@ const initialBlogs = [
   }
 ]
 
+let authToken = ""
+
+async function loginUser() {
+  const loginResponse = await api.post('/api/login')
+    .send({ username: 'supertestuser', password: 'testi' })
+  // console.log(loginResponse.body.token)
+  authToken = loginResponse.body.token
+}
+
+loginUser();
+
 beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(initialBlogs)
@@ -42,7 +53,7 @@ test('returned blogs have id field', async () => {
   expect(response.body[0].id).toBeDefined()
 })
 
-test('a valid blog can be added', async () => {
+test('authorized user can add a valid blog', async () => {
   const newBlog = {
     title: 'Canonical string reduction',
     author: 'Edsger W. Dijkstra',
@@ -52,6 +63,7 @@ test('a valid blog can be added', async () => {
 
   await api
     .post('/api/blogs')
+    .set({Authorization: `Bearer ${authToken}`})
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
@@ -67,6 +79,20 @@ test('a valid blog can be added', async () => {
 
 })
 
+test('unauthorized user gets status 401', async () => {
+  const newBlog = {
+    title: 'Canonical string reduction',
+    author: 'Edsger W. Dijkstra',
+    url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+    likes: 12
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(401)
+})
+
 test('if likes is not given, set the value to 0', async () => {
   const newBlog = {
     title: 'TDD harms architecture',
@@ -76,6 +102,7 @@ test('if likes is not given, set the value to 0', async () => {
 
   await api
     .post('/api/blogs')
+    .set({Authorization: `Bearer ${authToken}`})
     .send(newBlog)
 
     const response = await api.get('/api/blogs')
@@ -93,6 +120,7 @@ test('new blog without title gets a bad request statuscode', async () => {
 
   await api
   .post('/api/blogs')
+  .set({Authorization: `Bearer ${authToken}`})
   .send(newBlog)
   .expect(400)
 
@@ -107,6 +135,7 @@ test('new blog without url gets a bad request statuscode', async () => {
 
   await api
   .post('/api/blogs')
+  .set({Authorization: `Bearer ${authToken}`})
   .send(newBlog)
   .expect(400)
 

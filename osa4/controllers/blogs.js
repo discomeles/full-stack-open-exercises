@@ -22,9 +22,7 @@ blogRouter.post('/', userExtractor, async (request, response, next) => {
   if (!request.body.url) {
     return response.status(400).end()
   }
-  console.log(request.user)
   const user = await User.findById(request.user)
-  console.log(user)
 
   const blog = new Blog({
     title: request.body.title,
