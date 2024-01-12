@@ -50,6 +50,14 @@ const App = () => {
     setUser(null)
   }
 
+  const addBlog = (blogObject) => {
+    console.log(blogObject)
+    blogService.create(blogObject, user.token)
+      .then(returnedBlog => {
+        setBlogs(blogs.concat(returnedBlog))
+      })
+  }
+
   if (user === null) {
     return (
       <div>
@@ -86,6 +94,7 @@ const App = () => {
       {user.name} logged in 
       <button type="button" onClick={handleLogout}>logout</button>
       </p>
+      <BlogForm addBlog={addBlog}/>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
