@@ -7,13 +7,16 @@ const tokenExtractor = (request, response, next) => {
   if (authorization && authorization.startsWith('Bearer ')) {
     request.token =  authorization.replace('Bearer ', '')
   } else {
-    return response.status(401).json({ error: 'Unauthorized' })
+    request.token = null
   }
 
   next()
 }
 
 const userExtractor = (request, response, next) => {
+  if (!request.token) {
+    return response.status(401).json({ error: 'Unauthorized' })
+  }
   const decodedToken = jwt.verify(request.token, config.jwtsecret)
   if (decodedToken.id) {
     request.user = decodedToken.id
