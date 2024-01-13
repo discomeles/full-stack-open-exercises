@@ -35,6 +35,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [notifMessage, setNotifMessage] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [showBlogForm, setShowBlogForm] = useState(false)
 
 
   useEffect(() => {
@@ -50,6 +51,11 @@ const App = () => {
       setUser(user)
     }
   },[])
+
+  const toggleBlogForm = () => {
+    const value = showBlogForm === true ? false : true
+    setShowBlogForm(value)
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -127,7 +133,11 @@ const App = () => {
       {user.name} logged in 
       <button type="button" onClick={handleLogout}>logout</button>
       </p>
-      <BlogForm addBlog={addBlog}/>
+      {!showBlogForm && <button type="button" onClick={(e) => toggleBlogForm()}>new blog</button>}
+      {showBlogForm && <BlogForm 
+                          addBlog={addBlog} 
+                          showBlogForm={showBlogForm} 
+                          toggleBlogForm={toggleBlogForm}/>}
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
