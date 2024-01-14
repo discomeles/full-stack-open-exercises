@@ -87,7 +87,8 @@ const App = () => {
     console.log(blogObject)
     blogService.create(blogObject, user.token)
       .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
+        const blogToList = {...returnedBlog, user: {name: user.name}}
+        setBlogs(blogs.concat(blogToList))
         setNotifMessage(`a new blog ${blogObject.title} by ${blogObject.author} added`)
         setTimeout(() => {
           setNotifMessage(null)
