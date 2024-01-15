@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlog }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -16,13 +16,26 @@ const Blog = ({ blog }) => {
     setShowAll(value)
   }
 
+  const updateLikes = (blog) => {
+    const blogObject = {
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: blog.likes + 1,
+      user: blog.user.id
+    }
+    updateBlog(blogObject, blog.id)
+  }
+
   const buttonText = showAll === false ? "view" : "hide"
 
   const blogInfo = () => (
     <>
     <br/>
     {blog.url}<br/>
-    {blog.likes} <button type="button">like</button><br/>
+    {blog.likes} <button 
+                    type="button"
+                    onClick={(e) => updateLikes(blog)}>like</button><br/>
     {blog.user.name}<br/>
     </>
   )
