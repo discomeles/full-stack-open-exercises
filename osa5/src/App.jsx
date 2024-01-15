@@ -87,7 +87,7 @@ const App = () => {
     console.log(blogObject)
     blogService.create(blogObject, user.token)
       .then(returnedBlog => {
-        const blogToList = {...returnedBlog, user: {name: user.name}}
+        const blogToList = {...returnedBlog, user: {username:user.username, name: user.name}}
         setBlogs(blogs.concat(blogToList))
         setNotifMessage(`a new blog ${blogObject.title} by ${blogObject.author} added`)
         setTimeout(() => {
@@ -98,7 +98,7 @@ const App = () => {
 
   const updateBlog = async (blogObject,id) => {
     const updatedBlog = await blogService.update(blogObject,id)
-    const blogToList = {...updatedBlog, user: {name: user.name}}
+    const blogToList = {...updatedBlog, user: {username:user.username, name: user.name}}
     const modifiedBlogs = blogs.reduce((acc, obj) => {
       if (obj.id === id) {
         acc.push(blogToList)
@@ -108,6 +108,14 @@ const App = () => {
       return acc
     }, [])
     setBlogs(modifiedBlogs)
+  }
+
+  const removeBlog = async (id) => {
+    const response = await blogService.remove(id, user.token)
+    if (response.status === 204) {
+      const remainingBlogs = blogs.filter(element => element.id !== id)
+      setBlogs(remainingBlogs)
+    }
   }
 
   if (user === null) {
@@ -154,7 +162,7 @@ const App = () => {
                           showBlogForm={showBlogForm} 
                           toggleBlogForm={toggleBlogForm}/>}
       {blogs.toSorted((a,b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog} user={user}/>
       )}
       
     </div>

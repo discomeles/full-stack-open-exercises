@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-const Blog = ({ blog, updateBlog }) => {
+const Blog = ({ blog, updateBlog, removeBlog, user }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -10,6 +10,8 @@ const Blog = ({ blog, updateBlog }) => {
   }
 
   const [showAll, setShowAll] = useState(false)
+
+  const isUser = blog.user.username === user.username
 
   const toggleShowAll = () => {
     const value = showAll === true ? false : true
@@ -27,9 +29,17 @@ const Blog = ({ blog, updateBlog }) => {
     updateBlog(blogObject, blog.id)
   }
 
+  const delBlog = (blog) => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      removeBlog(blog.id)
+    }
+  }
+
   const buttonText = showAll === false ? "view" : "hide"
 
-  const blogInfo = () => (
+  const blogInfo = () => {
+  
+    return (
     <>
     <br/>
     {blog.url}<br/>
@@ -37,8 +47,10 @@ const Blog = ({ blog, updateBlog }) => {
                     type="button"
                     onClick={(e) => updateLikes(blog)}>like</button><br/>
     {blog.user.name}<br/>
+    {isUser && <button type="button" onClick={(e) => delBlog(blog)}>remove</button>}
     </>
-  )
+    )
+  }
 
   return (
     <div style={blogStyle}>
