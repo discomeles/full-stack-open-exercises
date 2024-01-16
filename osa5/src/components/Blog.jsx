@@ -1,4 +1,5 @@
-import {useState} from 'react'
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, updateBlog, removeBlog, user }) => {
   const blogStyle = {
@@ -35,33 +36,39 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
     }
   }
 
-  const buttonText = showAll === false ? "view" : "hide"
+  const buttonText = showAll === false ? 'view' : 'hide'
 
   const blogInfo = () => {
-  
+
     return (
-    <>
-    <br/>
-    {blog.url}<br/>
-    {blog.likes} <button 
-                    type="button"
-                    onClick={(e) => updateLikes(blog)}>like</button><br/>
-    {blog.user.name}<br/>
-    {isUser && <button type="button" onClick={(e) => delBlog(blog)}>remove</button>}
-    </>
+      <>
+        <br/>
+        {blog.url}<br/>
+        {blog.likes} <button
+          type="button"
+          onClick={(e) => updateLikes(blog)}>like</button><br/>
+        {blog.user.name}<br/>
+        {isUser && <button type="button" onClick={(e) => delBlog(blog)}>remove</button>}
+      </>
     )
   }
 
   return (
     <div style={blogStyle}>
-      {blog.title} {blog.author} <button 
-                                    type="button" 
-                                    onClick={(e) => toggleShowAll()}>{buttonText}</button>
+      {blog.title} {blog.author} <button
+        type="button"
+        onClick={(e) => toggleShowAll()}>{buttonText}</button>
       {showAll && blogInfo()}
-    </div>  
+    </div>
   )
 
 }
 
+Blog.propTypes = {
+  blog: PropTypes.object,
+  updateBlog: PropTypes.func,
+  removeBlog: PropTypes.func,
+  user: PropTypes.object
+}
 
 export default Blog

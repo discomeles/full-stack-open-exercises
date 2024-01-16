@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 
-const BlogForm = ({addBlog, toggleBlogForm}) => {
+const BlogForm = ({ addBlog, toggleBlogForm }) => {
   const [blogState, setBlogState] = useState({
     title:'',
     author:'',
@@ -8,7 +9,7 @@ const BlogForm = ({addBlog, toggleBlogForm}) => {
   })
 
   const onSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     addBlog(blogState)
     setBlogState({
       title:'',
@@ -28,42 +29,47 @@ const BlogForm = ({addBlog, toggleBlogForm}) => {
   }
 
   return (
-      <div>
-        <h2>create new</h2>
-        <form onSubmit={onSubmit}>
+    <div>
+      <h2>create new</h2>
+      <form onSubmit={onSubmit}>
         <div>
           title
-            <input
+          <input
             type="text"
             value={blogState.title}
             name="title"
-            onChange={({ target }) => setBlogState(prevState => ({ ...prevState, title:target.value}))}
+            onChange={({ target }) => setBlogState(prevState => ({ ...prevState, title:target.value }))}
           />
         </div>
         <div>
           author
-            <input
+          <input
             type="text"
             value={blogState.author}
             name="author"
-            onChange={({ target }) => setBlogState(prevState => ({ ...prevState, author:target.value}))}
+            onChange={({ target }) => setBlogState(prevState => ({ ...prevState, author:target.value }))}
           />
         </div>
         <div>
           url
-            <input
+          <input
             type="text"
             value={blogState.url}
             name="url"
-            onChange={({ target }) => setBlogState(prevState => ({ ...prevState, url:target.value}))}
+            onChange={({ target }) => setBlogState(prevState => ({ ...prevState, url:target.value }))}
           />
         </div>
 
         <button type="submit">create</button>
         <button type="button" onClick={handleCancel}>cancel</button>
       </form>
-      </div>
-    )
+    </div>
+  )
+}
+
+BlogForm.propTypes = {
+  addBlog: PropTypes.func.isRequired,
+  toggleBlogForm: PropTypes.func.isRequired
 }
 
 export default BlogForm
