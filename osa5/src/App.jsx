@@ -4,7 +4,7 @@ import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
-const Notification = ({message}) => {
+const Notification = ({ message }) => {
   if (message === null) {
     return null
   }
@@ -13,10 +13,10 @@ const Notification = ({message}) => {
     <div className="success">
       {message}
     </div>
-  )  
+  )
 }
 
-const Error = ({message}) => {
+const Error = ({ message }) => {
   if (message === null) {
     return null
   }
@@ -25,7 +25,7 @@ const Error = ({message}) => {
     <div className="error">
       {message}
     </div>
-  )  
+  )
 }
 
 const App = () => {
@@ -41,7 +41,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -87,7 +87,7 @@ const App = () => {
     console.log(blogObject)
     blogService.create(blogObject, user.token)
       .then(returnedBlog => {
-        const blogToList = {...returnedBlog, user: {username:user.username, name: user.name}}
+        const blogToList = { ...returnedBlog, user: { username:user.username, name: user.name } }
         setBlogs(blogs.concat(blogToList))
         setNotifMessage(`a new blog ${blogObject.title} by ${blogObject.author} added`)
         setTimeout(() => {
@@ -98,7 +98,7 @@ const App = () => {
 
   const updateBlog = async (blogObject,id) => {
     const updatedBlog = await blogService.update(blogObject,id)
-    const blogToList = {...updatedBlog, user: {username:user.username, name: user.name}}
+    const blogToList = { ...updatedBlog, user: { username:user.username, name: user.name } }
     const modifiedBlogs = blogs.reduce((acc, obj) => {
       if (obj.id === id) {
         acc.push(blogToList)
@@ -124,26 +124,26 @@ const App = () => {
         <h2>Log in</h2>
         <Error message={errorMessage} />
         <form onSubmit={handleLogin}>
-        <div>
+          <div>
           username
             <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
+              type="text"
+              value={username}
+              name="Username"
+              onChange={({ target }) => setUsername(target.value)}
+            />
+          </div>
+          <div>
           password
             <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">login</button>
-      </form>
+              type="password"
+              value={password}
+              name="Password"
+              onChange={({ target }) => setPassword(target.value)}
+            />
+          </div>
+          <button type="submit">login</button>
+        </form>
       </div>
     )
   }
@@ -153,18 +153,18 @@ const App = () => {
       <h2>blogs</h2>
       <Notification message={notifMessage} />
       <p>
-      {user.name} logged in 
-      <button type="button" onClick={handleLogout}>logout</button>
+        {user.name} logged in
+        <button type="button" onClick={handleLogout}>logout</button>
       </p>
       {!showBlogForm && <button type="button" onClick={(e) => toggleBlogForm()}>new blog</button>}
-      {showBlogForm && <BlogForm 
-                          addBlog={addBlog} 
-                          showBlogForm={showBlogForm} 
-                          toggleBlogForm={toggleBlogForm}/>}
+      {showBlogForm && <BlogForm
+        addBlog={addBlog}
+        showBlogForm={showBlogForm}
+        toggleBlogForm={toggleBlogForm}/>}
       {blogs.toSorted((a,b) => b.likes - a.likes).map(blog =>
         <Blog key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog} user={user}/>
       )}
-      
+
     </div>
   )
 }
