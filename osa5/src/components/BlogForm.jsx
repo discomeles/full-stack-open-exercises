@@ -38,6 +38,7 @@ const BlogForm = ({ addBlog, toggleBlogForm }) => {
             type="text"
             value={blogState.title}
             name="title"
+            id="title"
             onChange={({ target }) => setBlogState(prevState => ({ ...prevState, title:target.value }))}
           />
         </div>
@@ -47,6 +48,7 @@ const BlogForm = ({ addBlog, toggleBlogForm }) => {
             type="text"
             value={blogState.author}
             name="author"
+            id="author"
             onChange={({ target }) => setBlogState(prevState => ({ ...prevState, author:target.value }))}
           />
         </div>
@@ -56,6 +58,7 @@ const BlogForm = ({ addBlog, toggleBlogForm }) => {
             type="text"
             value={blogState.url}
             name="url"
+            id="url"
             onChange={({ target }) => setBlogState(prevState => ({ ...prevState, url:target.value }))}
           />
         </div>
