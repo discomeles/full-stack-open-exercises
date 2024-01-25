@@ -75,9 +75,58 @@ describe('Blog app', function() {
       cy.login({ username: 'testuser', password:'testword' })
     })
 
-    it.only('only user who added it can see the remove button', function() {
+    it('only user who added it can see the remove button', function() {
       cy.contains('view').click()
       cy.contains('remove').should('not.exist')
+    })
+  })
+  describe('When multiple blogs are added', function() {
+    beforeEach(function() {
+      cy.login({ username: 'testuser', password:'testword' })
+      cy.addBlog({
+        title: 'First Blog',
+        author: 'First Author',
+        url: 'first.url.org'
+      })
+      cy.addBlog({
+        title: 'Second Blog',
+        author: 'Second Author',
+        url: 'second.url.org'
+      })
+      cy.addBlog({
+        title: 'Third Blog',
+        author: 'Third Author',
+        url: 'third.url.org'
+      })
+    })
+
+    it.only('blog that gets most likes comes first', function() {
+      cy.contains('Third Blog')
+        .contains('view')
+        .click()
+
+      cy.contains('like').click()
+
+      cy.contains('hide').click()
+
+      cy.contains('First Blog')
+        .contains('view')
+        .click()
+
+      cy.contains('like').click()
+
+      cy.contains('hide').click()
+
+      cy.contains('Third Blog')
+        .contains('view')
+        .click()
+
+      cy.contains('like').click()
+
+      cy.contains('hide').click()
+
+      cy.get('.blog').eq(0).should('contain', 'Third Blog')
+      cy.get('.blog').eq(1).should('contain', 'First Blog')
     })
   })
 })

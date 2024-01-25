@@ -53,7 +53,7 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       <div>{blog.title} {blog.author} <button
         type="button"
         onClick={(e) => toggleShowAll()}>{buttonText}</button>
