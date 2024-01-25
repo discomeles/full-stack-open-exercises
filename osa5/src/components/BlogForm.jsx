@@ -63,8 +63,8 @@ const BlogForm = ({ addBlog, toggleBlogForm }) => {
           />
         </div>
 
-        <button type="submit">create</button>
-        <button type="button" onClick={handleCancel}>cancel</button>
+        <button type="submit" id="blog-submit-button">create</button>
+        <button type="button" id="blog-cancel-button" onClick={handleCancel}>cancel</button>
       </form>
     </div>
   )
