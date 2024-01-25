@@ -45,3 +45,20 @@ Cypress.Commands.add('login', ({ username, password }) => {
     cy.visit('')
   })
 })
+
+Cypress.Commands.add('addBlog', ({ title, author, url }) => {
+  const blog = {
+    title: title,
+    author: author,
+    url: url
+  }
+  cy.request({
+    url: `${Cypress.env('BACKEND')}/blogs`,
+    method: 'POST',
+    body: blog,
+    headers: {
+      'Authorization': `Bearer ${JSON.parse(localStorage.getItem('loggedBlogappUser')).token}`
+    }
+  })
+  cy.visit('')
+})

@@ -41,6 +41,21 @@ describe('Blog app', function() {
       cy.get('#blog-submit-button').click()
       cy.contains('cypress blog')
     })
+
+    describe('and a blog exists', function() {
+      this.beforeEach(function() {
+        cy.addBlog({
+          title: 'Fakeblog Title',
+          author: 'Fake Testauthor',
+          url: 'fake.tests.org'
+        })
+      })
+
+      it.only('it can be liked', function() {
+        cy.contains('view').click()
+        cy.contains('like').click()
+      })
+    })
   })
 
 })
