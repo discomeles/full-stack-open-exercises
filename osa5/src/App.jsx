@@ -156,15 +156,18 @@ const App = () => {
         {user.name} logged in
         <button type="button" onClick={handleLogout}>logout</button>
       </p>
-      {!showBlogForm && <button type="button" onClick={(e) => toggleBlogForm()}>new blog</button>}
-      {showBlogForm && <BlogForm
-        addBlog={addBlog}
-        showBlogForm={showBlogForm}
-        toggleBlogForm={toggleBlogForm}/>}
-      {blogs.toSorted((a,b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog} user={user}/>
-      )}
-
+      <div>
+        {!showBlogForm && <button type="button" onClick={(e) => toggleBlogForm()}>new blog</button>}
+        {showBlogForm && <BlogForm
+          addBlog={addBlog}
+          showBlogForm={showBlogForm}
+          toggleBlogForm={toggleBlogForm}/>}
+      </div>
+      <div>
+        {blogs.toSorted((a,b) => b.likes - a.likes).map(blog =>
+          <Blog key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog} user={user}/>
+        )}
+      </div>
     </div>
   )
 }

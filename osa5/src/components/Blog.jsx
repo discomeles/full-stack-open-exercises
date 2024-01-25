@@ -42,22 +42,22 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
 
     return (
       <>
-        <br/>
-        {blog.url}<br/>
-        {blog.likes} <button
+        <div>{blog.url}</div>
+        <div>likes {blog.likes} <button
           type="button"
-          onClick={(e) => updateLikes(blog)}>like</button><br/>
-        {blog.user.name}<br/>
-        {isUser && <button type="button" onClick={(e) => delBlog(blog)}>remove</button>}
+          onClick={(e) => updateLikes(blog)}>like</button></div>
+        <div>{blog.user.name}</div>
+        <div>{isUser && <button type="button" onClick={(e) => delBlog(blog)}>remove</button>}</div>
       </>
     )
   }
 
   return (
     <div style={blogStyle}>
-      {blog.title} {blog.author} <button
+      <div>{blog.title} {blog.author} <button
         type="button"
         onClick={(e) => toggleShowAll()}>{buttonText}</button>
+      </div>
       {showAll && blogInfo()}
     </div>
   )
