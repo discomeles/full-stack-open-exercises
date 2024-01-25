@@ -43,7 +43,7 @@ describe('Blog app', function() {
     })
 
     describe('and a blog exists', function() {
-      this.beforeEach(function() {
+      beforeEach(function() {
         cy.addBlog({
           title: 'Fakeblog Title',
           author: 'Fake Testauthor',
@@ -51,11 +51,33 @@ describe('Blog app', function() {
         })
       })
 
-      it.only('it can be liked', function() {
+      it('it can be liked', function() {
         cy.contains('view').click()
         cy.contains('like').click()
       })
+
+      it('user who created it can remove it', function() {
+        cy.contains('view').click()
+        cy.contains('remove').click()
+      })
     })
   })
+  describe('When another user has added a blog', function() {
+    beforeEach(function() {
+      cy.adduser({ name: 'Other User', username:'otheruser', password:'otherword' })
+      cy.login({ username: 'otheruser', password:'otherword' })
+      cy.addBlog({
+        title: 'Other Fakeblog Title',
+        author: 'Otherfake Testauthor',
+        url: 'otherfake.tests.org'
+      })
+      cy.contains('logout').click()
+      cy.login({ username: 'testuser', password:'testword' })
+    })
 
+    it.only('only user who added it can see the remove button', function() {
+      cy.contains('view').click()
+      cy.contains('remove').should('not.exist')
+    })
+  })
 })
